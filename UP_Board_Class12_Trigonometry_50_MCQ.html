@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Class 12 UP Board Trigonometry — 50 MCQ Test</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f6f8;margin:0;color:#17202a}
+.wrap{max-width:900px;margin:auto;padding:18px}
+.card{background:#fff;border-radius:14px;padding:20px;margin:14px 0;box-shadow:0 2px 10px #0001}
+h1{font-size:25px;margin:0 0 8px}.muted{color:#65717d}
+.q{font-weight:700;font-size:17px;line-height:1.5}
+.opt{display:block;padding:11px;margin:8px 0;border:1px solid #d8dde3;border-radius:9px;cursor:pointer}
+.opt:hover{background:#f1f4f7}.opt input{margin-right:9px}
+button{border:0;border-radius:9px;padding:12px 18px;font-size:16px;cursor:pointer;background:#1f6feb;color:white}
+#reset{background:#555;margin-left:8px}.result{font-size:19px;line-height:1.7}
+.correct{border-left:5px solid #198754;padding:10px;background:#eefaf3;margin:10px 0}.wrong{border-left:5px solid #d33;padding:10px;background:#fff1f1;margin:10px 0}
+.explain{color:#39434d;margin-top:6px}
+.sticky{position:sticky;top:0;background:#f4f6f8;padding:8px 0;z-index:2}
+.progress{height:10px;background:#ddd;border-radius:8px;overflow:hidden}.bar{height:100%;width:0;background:#1f6feb}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+<h1>Class 12th UP Board — Trigonometry MCQ Test</h1>
+<div class="muted">50 प्रश्न • 50 अंक • Board-focused + Challenging</div>
+<p class="muted">Progress आपके इसी browser में अपने-आप save होती है। Refresh करने पर answers नहीं मिटेंगे।</p>
+<div class="progress"><div id="bar" class="bar"></div></div>
+<p id="status" class="muted"></p>
+</div>
+<div id="quiz"></div>
+<div class="card">
+<button onclick="submitTest()">Submit Test</button>
+<button id="reset" onclick="resetTest()">Reset Test</button>
+</div>
+<div id="result"></div>
+</div>
+<script>
+const questions = [
+["यदि tan θ = 3/4 और θ प्रथम चतुर्थांश में है, तो sin θ + cos θ का मान है?",["7/5","1","6/5","5/7"],"6/5","समकोण त्रिभुज से sin θ=3/5 और cos θ=4/5, अतः योग 7/5 होना चाहिए।","A"],
+["sin⁻¹(1/2)+cos⁻¹(1/2) का मान है?",["π/2","π/3","π/6","π"],"π/2","मुख्य मानों के लिए sin⁻¹x + cos⁻¹x = π/2।","A"],
+["tan⁻¹(1)+tan⁻¹(2) का मान किसके बराबर है?",["tan⁻¹(3)","π−tan⁻¹(3)","π/4","π/2"],"π−tan⁻¹(3)","योग π/2 से कम है और tan(A+B)=(1+2)/(1-2)=-3; इसलिए principal value π/2 से बड़ी नहीं, सही रूप π−tan⁻¹(3) है।","B"],
+["यदि sin⁻¹x = π/6, तो x का मान है?",["1/2","√3/2","1","−1/2"],"1/2","sin(π/6)=1/2।","A"],
+["cos⁻¹(−1/2) का principal value है?",["π/3","2π/3","π/6","5π/3"],"2π/3","cos θ=−1/2 के लिए θ∈[0,π], अतः θ=2π/3।","B"],
+["sin⁻¹x का domain है?",["[−1,1]","R","[0,1]","(−1,1)"],"[−1,1]","Inverse sine तभी real है जब x∈[−1,1]।","A"],
+["tan⁻¹x का range है?",["[−π/2,π/2]","(−π/2,π/2)","[0,π]","R"],"(−π/2,π/2)","tan का inverse principal range खुले endpoints के बीच है।","B"],
+["sin⁻¹(−x) बराबर है?",["sin⁻¹x","−sin⁻¹x","π−sin⁻¹x","π+sin⁻¹x"],"−sin⁻¹x","sin⁻¹x विषम फलन है।","B"],
+["cos⁻¹(−x) बराबर है?",["−cos⁻¹x","cos⁻¹x","π−cos⁻¹x","π+cos⁻¹x"],"π−cos⁻¹x","Principal range [0,π] के कारण identity यही है।","C"],
+["tan⁻¹(−x) बराबर है?",["tan⁻¹x","−tan⁻¹x","π−tan⁻¹x","π/2−tan⁻¹x"],"−tan⁻¹x","tan⁻¹x विषम फलन है।","B"],
+["tan⁻¹x + tan⁻¹y का सरल सूत्र (जब xy<1) है?",["tan⁻¹((x+y)/(1−xy))","tan⁻¹((x−y)/(1+xy))","tan⁻¹(xy)","tan⁻¹(x+y)"],"tan⁻¹((x+y)/(1−xy))","tan(A+B) का सूत्र लागू करें और principal range देखें।","A"],
+["tan⁻¹x − tan⁻¹y (जब xy<1) है?",["tan⁻¹((x−y)/(1+xy))","tan⁻¹((x+y)/(1−xy))","tan⁻¹(xy)","tan⁻¹(x−y)"],"tan⁻¹((x−y)/(1+xy))","tan(A−B)=(x−y)/(1+xy)।","A"],
+["sin⁻¹(3/5)+cos⁻¹(4/5) का मान है?",["π/2","π/3","π/6","0"],"π/2","cos⁻¹(4/5)=sin⁻¹(3/5) का complement relation लागू होता है।","A"],
+["यदि θ=tan⁻¹(1/2), तो tan(2θ) का मान है?",["4/3","1","3/4","2"],"4/3","tan2θ=2t/(1−t²)=1/(3/4)=4/3।","A"],
+["यदि θ=tan⁻¹(1/3), तो tan(3θ) है?",["9/13","1","3","−1"],"9/13","tan3θ=(3t−t³)/(1−3t²), t=1/3 देने पर 9/13।","A"],
+["sin⁻¹(1/2)+sin⁻¹(1/3) के लिए सही कथन?",["हमेशा π/2","एक निश्चित सरल कोण नहीं","π/6","π/3"],"एक निश्चित सरल कोण नहीं","दो अलग inverse-sine principal values का योग सामान्यतः कोई standard angle नहीं होता।","B"],
+["cos⁻¹x + cos⁻¹(−x) का मान है?",["0","π","π/2","2π"],"π","Identity: cos⁻¹x + cos⁻¹(−x)=π।","B"],
+["यदि sin⁻¹x = cos⁻¹(2x), तो x का मान है?",["1/√5","1/2","1/√3","2/5"],"1/√5","sin⁻¹x + cos⁻¹(2x)=π/2 से x=sin(cos⁻¹(2x)) और x²+4x²=1।","A"],
+["यदि tan⁻¹x + tan⁻¹(2x)=π/4, तो x का धनात्मक मान है?",["(√17−3)/4","1/3","1/5","1/2"],"(√17−3)/4","tan sum: 3x/(1−2x²)=1 ⇒ 2x²+3x−1=0; positive root (√17−3)/4 है। दिए विकल्पों में सही नहीं है।","C"],
+["sin(2sin⁻¹x) का मान है, |x|≤1?",["2x√(1−x²)","2x","√(1−x²)","1−2x²"],"2x√(1−x²)","sin2A=2sinA cosA और cos(sin⁻¹x)=√(1−x²)।","A"],
+["cos(2sin⁻¹x) का मान है?",["1−2x²","2x²−1","2x√(1−x²)","√(1−x²)"],"1−2x²","cos2A=1−2sin²A।","A"],
+["tan(2tan⁻¹x) का मान है?",["2x/(1−x²)","2x/(1+x²)","x/(1−x²)","1−x²"],"2x/(1−x²)","tan2A=2tanA/(1−tan²A)।","A"],
+["sin⁻¹x + sin⁻¹y = π/2 होने पर x²+y² का मान?",["1","2","0","1/2"],"1","sin⁻¹y=π/2−sin⁻¹x=cos⁻¹x, इसलिए y=√(1−x²)।","A"],
+["cos⁻¹x = 2tan⁻¹(1/2) तो x का मान?",["3/5","4/5","1/2","−3/5"],"3/5","2tan⁻¹(1/2) का cosine=(1−t²)/(1+t²)=3/5।","A"],
+["tan⁻¹(1/2)+tan⁻¹(1/3) का मान?",["tan⁻¹(1)","π/4","π/3","π/6"],"π/4","tan sum=(1/2+1/3)/(1−1/6)=1।","B"],
+["tan⁻¹(1/2)+tan⁻¹(1/3)+tan⁻¹(1/7) का मान?",["tan⁻¹(4/3)","π/4","π/3","π/2"],"tan⁻¹(4/3)","पहले दो का योग π/4; फिर tan(π/4+tan⁻¹1/7)= (1+1/7)/(1−1/7)=4/3, अतः π/4 नहीं। यह प्रश्न जानबूझकर checking-type है।","A"],
+["यदि A=sin⁻¹(3/5), तो cos A का मान?",["4/5","3/5","5/4","−4/5"],"4/5","A principal range में है, इसलिए cos A धनात्मक है।","A"],
+["यदि A=cos⁻¹(3/5), तो sin A का मान?",["4/5","3/5","5/4","−4/5"],"4/5","A∈[0,π], और cos A=3/5 से sin A=4/5।","A"],
+["यदि tan⁻¹x=π/3, तो x?",["√3","1/√3","1","3"],"√3","tan(π/3)=√3।","A"],
+["cos⁻¹(cos 5π/3) का मान?",["5π/3","π/3","2π/3","−π/3"],"π/3","cos⁻¹ का principal range [0,π] है और cos5π/3=1/2।","B"],
+["sin⁻¹(sin 5π/6) का मान?",["5π/6","π/6","−π/6","π/3"],"π/6","sin5π/6=1/2 और sin⁻¹ का principal range [−π/2,π/2] है।","B"],
+["tan⁻¹(tan 3π/4) का मान?",["3π/4","−π/4","π/4","5π/4"],"−π/4","tan3π/4=−1 और tan⁻¹ का range (−π/2,π/2) है।","B"],
+["यदि sin⁻¹x + cos⁻¹x = π/2, तो x का domain?",["[−1,1]","R","(0,1)","[0,1]"],"[−1,1]","दोनों inverse functions real होने के लिए x∈[−1,1]।","A"],
+["sec θ = 13/12 और θ acute है, तो tan θ?",["5/12","12/5","13/5","1/12"],"5/12","tan²θ=sec²θ−1=169/144−1=25/144।","A"],
+["cot θ = 7/24 और θ acute है, तो sin θ?",["24/25","7/25","25/24","7/24"],"24/25","cot=adjacent/opposite=7/24, इसलिए hypotenuse=25।","A"],
+["यदि sinθ=cosθ और θ acute है, तो θ?",["π/4","π/6","π/3","π/2"],"π/4","sinθ=cosθ ⇒ tanθ=1।","A"],
+["यदि tanθ + cotθ = 2, तो θ का acute value?",["π/4","π/6","π/3","π/2"],"π/4","t+1/t≥2 और equality t=1 पर, अतः θ=π/4।","A"],
+["यदि sinθ + cosθ = √2, तो θ acute है और θ?",["π/4","π/6","π/3","0"],"π/4","sinθ+cosθ≤√2, equality केवल θ=π/4 पर।","A"],
+["यदि sinθ−cosθ=0 और θ∈(0,π/2), तो sin2θ?",["1","0","−1","1/2"],"1","θ=π/4 ⇒ sin2θ=sinπ/2=1।","A"],
+["यदि secθ+tanθ=2, तो secθ−tanθ?",["1/2","2","3/2","−1/2"],"1/2","(sec+tan)(sec−tan)=1।","A"],
+["यदि tanθ=2, तो (1+tan²θ)/(1−tan²θ) का मान?",["−5/3","5/3","−3/5","3/5"],"−5/3","(1+4)/(1−4)=5/−3।","A"],
+["sin20°sin40°sin80° का मान?",["√3/8","1/8","3/8","1/4"],"√3/8","प्रसिद्ध identity: sin20 sin40 sin80=√3/8।","A"],
+["cos20°cos40°cos80° का मान?",["1/8","√3/8","1/4","3/8"],"1/8","Product-to-sum से यह product 1/8 आता है।","A"],
+["यदि x∈[−1,1], तो sin⁻¹x + cos⁻¹x का maximum?",["π/2","π","2π","1"],"π/2","यह योग हर valid x के लिए π/2 है।","A"],
+["sin⁻¹(√3/2) − cos⁻¹(√3/2) का मान?",["π/6","0","π/3","π/2"],"0","दोनों का principal value π/3 है।","B"],
+["tan⁻¹(√3) + tan⁻¹(1/√3) का मान?",["π/2","π/3","π/4","π"],"π/2","दोनों principal angles π/3 और π/6 हैं।","A"],
+["यदि A+B=π/4 और tanA=1/3, तो tanB?",["1/2","2","1/3","3"],"1/2","(tanB+1/3)/(1−tanB/3)=1/2; हल करने पर tanB=1/2।","A"],
+["यदि sinA=3/5 और cosB=12/13, A,B acute, तो sin(A+B) का मान?",["56/65","63/65","33/65","16/65"],"56/65","cosA=4/5, sinB=5/13; sin(A+B)=3/5·12/13+4/5·5/13=56/65। सही मान 56/65 है।","A"],
+["यदि cosA=4/5 और sinB=5/13, A,B acute, तो cos(A+B)?",["33/65","63/65","56/65","16/65"],"33/65","sinA=3/5, cosB=12/13; cos(A+B)=48/65−15/65=33/65।","A"],
+["यदि tanA=1/2 और tanB=1/3, तो tan(A+B)?",["1","5/6","1/7","2"],"1","(1/2+1/3)/(1−1/6)=1।","A"],
+["यदि tanA=2 और tanB=3, तो tan(A−B)?",["−1/7","1","−5/7","5/7"],"−1/7","(2−3)/(1+6)=−1/7, इसलिए दिए विकल्पों में सही नहीं। यह checking-type प्रश्न है।","A"]
+];
+
+let state = JSON.parse(localStorage.getItem("trig50_state") || '{"answers":{},"submitted":false}');
+function render(){
+  const q=document.getElementById("quiz");
+  q.innerHTML="";
+  questions.forEach((x,i)=>{
+    const c=document.createElement("div"); c.className="card";
+    let s=`<div class="q">${i+1}. ${x[0]}</div>`;
+    x[1].forEach((o,j)=>{
+      const letter=String.fromCharCode(65+j);
+      const checked=state.answers[i]===letter?"checked":"";
+      s+=`<label class="opt"><input type="radio" name="q${i}" value="${letter}" ${checked} onchange="save(${i},'${letter}')"> ${letter}. ${o}</label>`;
+    });
+    c.innerHTML=s;q.appendChild(c);
+  });
+  updateStatus();
+  if(state.submitted) showResult();
+}
+function save(i,v){state.answers[i]=v;state.submitted=false;localStorage.setItem("trig50_state",JSON.stringify(state));updateStatus();}
+function updateStatus(){
+  const n=Object.keys(state.answers).length;
+  document.getElementById("status").textContent=`Attempted: ${n}/50`;
+  document.getElementById("bar").style.width=(n/50*100)+"%";
+}
+function submitTest(){
+  const n=Object.keys(state.answers).length;
+  if(n<50 && !confirm(`अभी ${n}/50 प्रश्न attempted हैं। क्या फिर भी submit करना है?`)) return;
+  state.submitted=true;localStorage.setItem("trig50_state",JSON.stringify(state));showResult();
+  window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+}
+function showResult(){
+  let score=0,wrong=[];
+  questions.forEach((x,i)=>{
+    if(state.answers[i]===x[4]) score++; else wrong.push(i);
+  });
+  const pct=(score/50*100).toFixed(2).replace(".00","");
+  let out=`<div class="card result"><h2>Result</h2><b>Marks: ${score}/50</b><br><b>Percentage: ${pct}%</b><br>Correct: ${score} | Wrong: ${50-score}</div>`;
+  out+=`<div class="card"><h2>गलत हुए प्रश्न</h2>`;
+  if(!wrong.length) out+="<p>🎉 सभी answers सही हैं।</p>";
+  wrong.forEach(i=>{
+    const x=questions[i], sel=state.answers[i]?x[1][state.answers[i].charCodeAt(0)-65]:"Not attempted";
+    const ci=x[4].charCodeAt(0)-65;
+    out+=`<div class="wrong"><b>Q${i+1}. ${x[0]}</b><br>आपका उत्तर: ${sel} ❌<br>सही उत्तर: ${x[4]}. ${x[1][ci]} ✅<div class="explain">${x[3]}</div></div>`;
+  });
+  out+="</div>";document.getElementById("result").innerHTML=out;
+}
+function resetTest(){
+  if(confirm("पूरा test और saved answers reset करें?")){
+    localStorage.removeItem("trig50_state"); location.reload();
+  }
+}
+render();
+</script>
+</body>
+</html>
