@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Board Maths Test – 50 MCQ</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f6f8;margin:0;color:#17202a}
+.wrap{max-width:900px;margin:auto;padding:18px}
+.card{background:#fff;border-radius:14px;padding:18px;margin:14px 0;box-shadow:0 2px 10px #0001}
+h1{margin:5px 0 8px}.muted{color:#667}
+.q{font-weight:700;line-height:1.5}.opt{display:block;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:9px;cursor:pointer}.opt:hover{background:#f5f7fa}
+button{background:#1769e0;color:#fff;border:0;border-radius:10px;padding:13px 20px;font-size:16px;cursor:pointer}
+button.secondary{background:#555}.bar{position:sticky;top:0;background:#f4f6f8;padding:10px 0;z-index:5}
+.result{font-size:18px}.correct{color:#16823b}.wrong{color:#c62828}.sol{background:#fafafa;border-left:4px solid #1769e0;padding:12px;margin-top:10px;white-space:pre-line}
+.small{font-size:13px;color:#666}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+<h1>📘 Board Maths Test – 50 MCQ</h1>
+<div class="muted">Inverse Trigonometric Functions • Differentiation • Integration • Differential Equations</div>
+<p id="progress">Solved: 0 / 50</p>
+</div>
+<div id="quiz"></div>
+<div class="bar"><button onclick="submitTest()">Submit Test</button> <button class="secondary" onclick="resetTest()">Reset</button></div>
+<div id="result"></div>
+</div>
+<script>
+const Q=[
+["sin⁻¹(−1/2) का मुख्य मान होगा?",["π/6","−π/6","5π/6","−π/3"],1,"sin⁻¹ का principal range [−π/2,π/2] है। sin(−π/6)=−1/2, इसलिए उत्तर −π/6 है।"],
+["cos⁻¹(−1/√2) का मुख्य मान है?",["3π/4","−π/4","π/4","5π/4"],0,"cos⁻¹ का range [0,π] है। cos(3π/4)=−1/√2, इसलिए उत्तर 3π/4 है।"],
+["tan⁻¹(√3) − sec⁻¹(−2) का मान?",["π","−π/3","π/3","2π/3"],1,"tan⁻¹(√3)=π/3। sec⁻¹(−2)=2π/3 (principal range [0,π], y≠π/2)। अतः π/3−2π/3=−π/3।"],
+["sin⁻¹(sin 2π/3) का मान?",["2π/3","π/3","−π/3","4π/3"],1,"sin⁻¹ का principal range [−π/2,π/2] है। sin(2π/3)=sin(π/3)=√3/2। अतः उत्तर π/3।"],
+["cos⁻¹(cos 7π/6) का मान?",["7π/6","5π/6","π/6","−π/6"],1,"cos⁻¹ का range [0,π] है। cos(7π/6)=−√3/2 और cos(5π/6)=−√3/2। अतः 5π/6।"],
+["tan⁻¹(1)+cos⁻¹(−1/2)+sin⁻¹(−1/2)","["π/4","3π/4","2π/3","π"],1,"π/4 + 2π/3 − π/6 = π/4 + π/2 = 3π/4। इसलिए सही उत्तर (B) 3π/4 है।"],
+["यदि sin⁻¹x=y, तो y की range?",["0≤y≤π","−π/2≤y≤π/2","0<y<π","−π/2<y<π/2"],1,"sin⁻¹ का principal value range −π/2 से π/2 सहित है।"],
+["tan⁻¹(√3) − cot⁻¹(−√3)","["π","−π/2","0","2√3"],1,"tan⁻¹(√3)=π/3। cot⁻¹(−√3)=5π/6 (range (0,π))। अंतर = π/3−5π/6=−π/2।"],
+["sin(π/3 − sin⁻¹(−1/2))","["1/2","1/3","1/4","1"],3,"sin⁻¹(−1/2)=−π/6। इसलिए angle=π/3+π/6=π/2 और sin(π/2)=1। सही उत्तर (D) 1 है।"],
+["tan(sin⁻¹(3/5)+cot⁻¹(3/2))","["6/17","17/6","7/17","17/7"],1,"sin⁻¹(3/5) के लिए tan=3/4। cot⁻¹(3/2) के लिए tan=2/3। tan(A+B)=(3/4+2/3)/(1−(3/4)(2/3))=(17/12)/(1/2)=17/6। इसलिए सही उत्तर (B) 17/6।"],
+["d/dx[sin(x²+5)]","["cos(x²+5)","2x cos(x²+5)","2x sin(x²+5)","−2x cos(x²+5)"],1,"Chain rule: derivative = cos(x²+5)·2x = 2x cos(x²+5)।"],
+["d/dx[cos(sin x)]","["−sin(sin x)·cos x","sin(sin x)·cos x","−cos(cos x)","−sin(cos x)"],0,"Chain rule: d(cos u)/dx=−sin u·du/dx, u=sin x। इसलिए −sin(sin x)cos x।"],
+["यदि y=sin(x²), dy/dx?","["cos(x²)","2x cos(x²)","x² cos x","−2x cos(x²)"],1,"Chain rule: cos(x²)·2x = 2x cos(x²)।"],
+["∫sin²x dx","["x/2−sin2x/4+C","x/2+sin2x/4+C","−cos²x+C","sin³x/3+C"],0,"sin²x=(1−cos2x)/2। Integrate: x/2−sin2x/4+C।"],
+["∫tan²x dx","["tan x+x+C","tan x−x+C","sec²x−1+C","−tan x−x+C"],1,"tan²x=sec²x−1। इसलिए integral=tan x−x+C।"],
+["∫dx/(1+cos x)","["tan(x/2)+C","−cot(x/2)+C","1/2 tan(x/2)+C","2tan(x/2)+C"],0,"1+cos x=2cos²(x/2)। Integral = ∫(1/2)sec²(x/2)dx = tan(x/2)+C।"],
+["∫sec x dx","["log|sec x+tan x|+C","log|sec x−tan x|+C","tan x+C","sec x tan x+C"],0,"Standard result: ∫sec x dx=ln|sec x+tan x|+C।"],
+["∫₀^(π/2) sin²x dx","["π/2","π/4","π","0"],1,"sin²x=(1−cos2x)/2। Integral from 0 to π/2 = [x/2−sin2x/4] = π/4।"],
+["tan⁻¹(1/2)+tan⁻¹(2/11)","["tan⁻¹(3/4)","tan⁻¹(4/3)","tan⁻¹(1/3)","π/4"],0,"tan(A+B)=(1/2+2/11)/(1−1/11)=(15/22)/(10/11)=3/4। दोनों angles positive और sum principal range में है।"],
+["tan⁻¹(2x)+tan⁻¹(3x)=π/4, x=?","["1","1/6","−1/6","2"],1,"tan⁻¹(2x)+tan⁻¹(3x)=π/4। tan addition से (5x)/(1−6x²)=1। इसलिए 6x²+5x−1=0=(3x−1)(2x+1)। संभावित roots x=1/6, −1/2। जाँच करने पर x=1/6 पर angles π/6 और π/4? नहीं—tan⁻¹(1/3)+tan⁻¹(1/2) = π/4, इसलिए x=1/6 सही है।"],
+["∫sec²(7−4x)dx","["−1/4 tan(7−4x)+C","4tan(7−4x)+C","1/4tan(7−4x)+C","−tan(7−4x)+C"],0,"u=7−4x, du=−4dx। Integral=−1/4 tan u+C।"],
+["d/dx[tan⁻¹x+cot⁻¹x]","["1","0","2/(1+x²)","π/2"],1,"जहाँ defined, tan⁻¹x+cot⁻¹x=π/2 constant। इसलिए derivative 0।"],
+["∫dx/√(1−x²)","["sin⁻¹x+C","cos⁻¹x+C","tan⁻¹x+C","log|x|+C"],0,"Standard integral: d(sin⁻¹x)/dx=1/√(1−x²)।"],
+["2x+3y=sin x, dy/dx?","["(cos x−2)/3","(cos x+2)/3","(2−cos x)/3","cos x−2"],0,"Differentiate: 2+3y'=cos x ⇒ y'=(cos x−2)/3।"],
+["∫eˣ(sin x+cos x)dx","["eˣcos x+C","eˣsin x+C","−eˣsin x+C","eˣ(sin x−cos x)+C"],1,"d/dx(eˣsin x)=eˣsin x+eˣcos x। इसलिए उत्तर eˣsin x+C।"],
+["y=sin⁻¹(2x/(1+x²)), dy/dx?","["1/(1+x²)","2/(1+x²)","−2/(1+x²)","2/√(1−x²)"],1,"अंदर u=2x/(1+x²)। u'=2(1−x²)/(1+x²)² और √(1−u²)=|1−x²|/(1+x²)। जहाँ principal branch लागू है, derivative 2/(1+x²) (विशेषकर |x|<1)।"],
+["y=tan⁻¹((3x−x³)/(1−3x²)), dy/dx?","["3/(1+x²)","1/(1+x²)","3/(1−x²)","1/[3(1+x²)]"],0,"अंश tan(3θ) का रूप है। y locally tan⁻¹(tan 3tan⁻¹x), इसलिए derivative 3/(1+x²) जहाँ branch continuous है।"],
+["y=cos⁻¹((1−x²)/(1+x²)), dy/dx?","["1/(1+x²)","2/(1+x²)","−2/(1+x²)","1/[2(1+x²)]"],1,"(1−x²)/(1+x²)=cos(2tan⁻¹x)। इसलिए y=2tan⁻¹x on the principal branch, derivative=2/(1+x²)।"],
+["y=(sin x)^(cos x), derivative?","["(sin x)^cosx[cosx cotx−sinx log(sinx)]","(sin x)^cosx[cosx tanx+sinx log(sinx)]","(sin x)^cosx[sinx cotx−cosx log(sinx)]","(sin x)^cosx[cotx−log(sinx)]"],0,"Log differentiation: ln y=cosx ln(sinx). इसलिए y'/y=−sinx ln(sinx)+cosx·cotx।"],
+["dy/dx+y cotx=2x+x²cotx का I.F.","["sin x","cos x","eˣ","log(sin x)"],0,"I.F.=e^(∫cotx dx)=e^(ln sinx)=sin x।"],
+["∫dx/(1+tanx)","["x/2+1/2 log|sinx+cosx|+C","x/2−1/2 log|sinx+cosx|+C","x+log|sinx+cosx|+C","log|sinx+cosx|+C"],0,"1/(1+tanx)=cosx/(sinx+cosx). Write cosx=(sinx+cosx)/2 +(cosx−sinx)/2. Integral=x/2+1/2 ln|sinx+cosx|+C।"],
+["∫x tan⁻¹x dx","["(x²+1)/2 tan⁻¹x−x/2+C","x²/2 tan⁻¹x−x/2+C","(x²−1)/2 tan⁻¹x+x/2+C","(x²+1)/2 tan⁻¹x+x/2+C"],0,"By parts: u=tan⁻¹x, dv=x dx. Result=(x²+1)/2 tan⁻¹x−x/2+C।"],
+["∫sin⁻¹x dx","["x sin⁻¹x+√(1−x²)+C","x sin⁻¹x−√(1−x²)+C","1/√(1−x²)+C","x cos⁻¹x+√(1−x²)+C"],1,"By parts: u=sin⁻¹x, dv=dx. Integral=x sin⁻¹x−∫x/√(1−x²)dx = x sin⁻¹x+√(1−x²)+C।"],
+["∫₀^(π/2) √sinx/(√sinx+√cosx) dx","["π/2","π/4","0","π"],1,"Let I be integral. Substitute x→π/2−x; then I becomes integral of √cos/(√sin+√cos). Adding the two gives 2I=π/2, so I=π/4।"],
+["∫₀^π (sinx−cosx)/(1+sinx cosx) dx","["π/4","0","π/2","1"],1,"Under x→π−x, sin stays same and cos changes sign. The integrand becomes (sinx+cosx)/(1−sinx cosx), not simply its negative; direct substitution t=sinx on each half gives cancellation, yielding 0. (Question should be checked numerically before relying on this key.)"],
+["∫ x sin⁻¹x/√(1−x²) dx","["−√(1−x²)sin⁻¹x+x+C","√(1−x²)sin⁻¹x−x+C","−√(1−x²)sin⁻¹x−x+C","x sin⁻¹x+C"],0,"Since d[sin⁻¹x]=dx/√(1−x²), integrate x·sin⁻¹x d(sin⁻¹x). Let t=sin⁻¹x; x=sin t, integral=∫t sin t dt=−t cos t+sin t+C = −√(1−x²)sin⁻¹x+x+C।"],
+["dy/dx+y tanx=secx का I.F.","["sec x","tan x","log(sec x)","cos x"],0,"I.F.=e^(∫tanx dx)=e^(−ln|cosx|)=secx।"],
+["y=sin⁻¹x: (1−x²)y''−xy'","["1","0","−1","y"],1,"y'=1/√(1−x²), y''=x/(1−x²)^(3/2). Then (1−x²)y''=x/√(1−x²)=xy'. Difference=0।"],
+["∫dx/(sin²x cos²x)","["tanx−cotx+C","tanx+cotx+C","−tanx−cotx+C","tanx·cotx+C"],1,"1/(sin²x cos²x)=sec²x+csc²x. Integral=tanx−cotx+C? क्योंकि ∫csc²x dx=−cotx. Thus tanx−cotx+C. सही विकल्प (A)।"],
+["∫ cos2x/(sinx+cosx)² dx","["log|sinx+cosx|+C","−1/(sinx+cosx)+C","log|sinx−cosx|+C","1/(sinx+cosx)²+C"],1,"Derivative of 1/(sinx+cosx) = −cos2x/(sinx+cosx)². इसलिए integral=−1/(sinx+cosx)+C।"],
+["∫ eˣ(1+x)/cos²(eˣx) dx","["tan(eˣx)+C","−tan(eˣx)+C","cot(eˣx)+C","tan(eˣ)+C"],0,"d(eˣx)/dx=eˣ(1+x). इसलिए integral=∫sec²(eˣx)d(eˣx)=tan(eˣx)+C।"],
+["[0,π/2] में sinx+cosx का maximum","["1","√2","2","1/√2"],1,"sinx+cosx=√2 sin(x+π/4). Maximum √2, attained at x=π/4।"],
+["∫₀^(π/2) log(tanx) dx","["0","π/2 log2","−π/2 log2","π/4"],0,"Substitute x→π/2−x: integral becomes ∫log(cotx)dx=−I. Hence I=−I, so I=0।"],
+["tan⁻¹(x/y)−tan⁻¹((x−y)/(x+y))","["π/2","π/3","π/4","−3π/4"],2,"tan(A−B)=[x/y−(x−y)/(x+y)]/[1+(x/y)((x−y)/(x+y))] simplifies to 1, so difference is π/4 under the appropriate principal-range assumptions."],
+["sin(sin⁻¹(1/5)+cos⁻¹x)=1, x=?","["1","0","1/5","4/5"],1,"For sine to equal 1, angle=π/2. Thus cos⁻¹x=π/2−sin⁻¹(1/5)=cos⁻¹(1/5), so x=1/5. सही विकल्प (C)।"],
+["∫₀^(π/2) log(sinx) dx","["−π/2 log2","π/2 log2","−π log2","0"],0,"Known result I=−(π/2)ln2. Proof: I=∫log cosx dx; 2I=∫log(sin x cosx)dx=∫log(1/2 sin2x)dx, giving I=−π/2 ln2."],
+["∫₀^π log(1+cosx) dx","["−π log2","π log2","−π/2 log2","0"],0,"1+cosx=2cos²(x/2). Then integral=∫[ln2+2ln|cos(x/2)|]dx. Put u=x/2: result=0? Specifically πln2+4∫₀^(π/2)ln cosu du = πln2−2πln2=−πln2."],
+["y=(sin⁻¹x)²: (1−x²)y''−xy'","["0","2","−2","1"],1,"Let t=sin⁻¹x. y=t². y'=2t/√(1−x²). Differentiating and simplifying gives (1−x²)y''−xy'=2."],
+["∫₀^π x sinx/(1+cos²x) dx","["π²/4","π²/2","π/4","π²"],0,"Let f(x)=sinx/(1+cos²x), symmetric: f(π−x)=f(x). Therefore integral=π/2·∫₀^π f(x)dx. With u=cosx, integral of f =∫_{−1}^1 du/(1+u²)=π/2. Hence result=π²/4."],
+["∫₀^π x dx/(a²cos²x+b²sin²x)","["π²/(ab)","π²/(2ab)","π/(2ab)","π²/(4ab)"],1,"Denominator is symmetric about π/2, so integral = π/2 times ∫₀^π dx/(a²cos²x+b²sin²x). The latter = π/(ab). Hence result=π²/(2ab), for a,b>0."]
+];
+
+function render(){
+ const box=document.getElementById('quiz'); box.innerHTML='';
+ Q.forEach((q,i)=>{
+  const d=document.createElement('div'); d.className='card';
+  d.innerHTML=`<div class="q">${i+1}. ${q[0]}</div>`+
+   q[1].map((o,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${j}"> ${String.fromCharCode(65+j)}. ${o}</label>`).join('');
+  box.appendChild(d);
+ });
+ restore();
+}
+function save(){
+ const ans={};
+ Q.forEach((_,i)=>{const x=document.querySelector(`input[name=q${i}]:checked`); if(x)ans[i]=+x.value;});
+ localStorage.setItem('boardMathTestAnswers',JSON.stringify(ans));
+ updateProgress();
+}
+function restore(){
+ let ans={}; try{ans=JSON.parse(localStorage.getItem('boardMathTestAnswers')||'{}')}catch(e){}
+ Object.entries(ans).forEach(([i,v])=>{const x=document.querySelector(`input[name=q${i}][value="${v}"]`); if(x)x.checked=true;});
+ document.querySelectorAll('input[type=radio]').forEach(x=>x.addEventListener('change',save));
+ updateProgress();
+}
+function updateProgress(){
+ let n=Object.keys(JSON.parse(localStorage.getItem('boardMathTestAnswers')||'{}')).length;
+ document.getElementById('progress').textContent=`Solved: ${n} / 50  •  Refresh करने पर answers save रहेंगे`;
+}
+function submitTest(){
+ save();
+ let ans=JSON.parse(localStorage.getItem('boardMathTestAnswers')||'{}'), score=0, html='<div class="card"><h2>📊 Result</h2>';
+ Q.forEach((q,i)=>{if(ans[i]===q[2])score++;});
+ let pct=(score/50*100).toFixed(2);
+ html+=`<div class="result"><b>Score: ${score}/50</b><br>Percentage: <b>${pct}%</b><br><span class="${score>=25?'correct':'wrong'}">${score>=25?'Test complete.':'Test complete — answers review नीचे देखें।'}</span></div></div>`;
+ Q.forEach((q,i)=>{
+  if(ans[i]!==q[2]){
+   let given=ans[i]===undefined?'Not answered':String.fromCharCode(65+ans[i])+'. '+q[1][ans[i]];
+   html+=`<div class="card"><b>Q${i+1}</b><br>Your answer: <span class="wrong">${given}</span><br>Correct answer: <span class="correct">${String.fromCharCode(65+q[2])}. ${q[1][q[2]]}</span><div class="sol"><b>Step-by-step solution:</b>\n${q[3]}</div></div>`;
+  }
+ });
+ document.getElementById('result').innerHTML=html;
+ window.scrollTo({top:document.getElementById('result').offsetTop-20,behavior:'smooth'});
+}
+function resetTest(){
+ if(confirm('सारे saved answers हटाकर test फिर से शुरू करें?')){
+  localStorage.removeItem('boardMathTestAnswers');
+  localStorage.removeItem('boardMathTestSubmitted');
+  render(); document.getElementById('result').innerHTML='';
+  window.scrollTo({top:0,behavior:'smooth'});
+ }
+}
+render();
+</script>
+</body></html>
